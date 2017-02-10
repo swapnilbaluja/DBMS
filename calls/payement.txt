@@ -1,0 +1,45 @@
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+pid number;
+method varchar2(20);
+orderidp number;
+f number;
+
+begin
+
+method:=:EnterMethodOfPayment;
+orderidp:=:EntercartId;
+
+payment1(orderidp,method,f);
+if f=0 then 
+raise no_data_found;
+end if;
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
