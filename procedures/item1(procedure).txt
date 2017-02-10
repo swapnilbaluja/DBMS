@@ -1,0 +1,9 @@
+create or replace procedure item1(catno2 in number) as
+cursor c4 is select * from product  where category_id2=catno2;
+ begin  
+dbms_output.put_line('pid'||'  '||'Name'||'  '||'Model'||'  '||'Price');    
+for rec4 in c4 loop
+            dbms_output.put_line(rec4.prod_id||'  '||rec4.name||'  '||rec4.model||'  '||rec4.price);
+             dbms_output.put_line('                  ');
+      end loop;
+end item1;

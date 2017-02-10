@@ -1,0 +1,13 @@
+create or replace trigger pkey
+ before insert on payment for each row
+declare
+var number;
+begin
+select max(p_id) into var from payment;
+:new.p_id:=var+1;
+end pkey;
+
+
+
+
+

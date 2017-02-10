@@ -1,0 +1,17 @@
+create or replace procedure cart1(conf in number,caid in number)as
+cursor c11 is select * from order1 where order_id=conf;
+name varchar2(20);
+toalcosting number;
+begin
+for recc in c11 loop
+name:=recc.username;
+toalcosting:=recc.total_cost;
+end loop;
+insert into cart values(caid,name,conf,toalcosting);
+if sql%rowcount>=1 then
+dbms_output.put_line('Cart Updated');
+else
+dbms_output.put_line('Process Cancelled');
+end if;
+
+end cart1;

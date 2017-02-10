@@ -1,0 +1,7 @@
+create  or replace trigger pk5
+after insert on order1 for each row
+
+begin
+
+dbms_output.put_line('Your Order Id is'||:new.order_id);
+end;

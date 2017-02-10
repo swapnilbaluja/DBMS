@@ -1,0 +1,10 @@
+create or replace procedure category1 as
+cursor c3 is select * from category;
+begin
+for rec3 in c3 loop
+            dbms_output.put_line(rec3.category_id||'  '||rec3.category_name);
+      end loop;
+end;
+
+
+

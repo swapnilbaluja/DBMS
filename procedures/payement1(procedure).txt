@@ -1,0 +1,26 @@
+create or replace procedure payment1(orderidp number,method in varchar2,f out number) as
+qwe cart%rowtype;
+varcg number;
+
+cursor c598 is select * from cart where c_id=orderidp;
+begin
+f:=0;
+for red in c598 loop 
+
+dbms_output.put_line('Your Total Bill Is'||red. total_cost);
+varcg:=red. total_cost;
+insert into payment(orderid_p ,
+payment_type,amount) values(orderidp,method,varcg);
+if c598%rowcount>=1 then
+f:=1;
+dbms_output.put_line('Thank You !!!!!');
+
+else
+dbms_output.put_line('Transaction Failed !!!!!');
+end if;
+
+end loop;
+end;
+
+
+

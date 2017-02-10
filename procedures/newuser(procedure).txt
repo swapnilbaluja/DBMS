@@ -1,0 +1,31 @@
+create or replace procedure newuser1( customer_id1 in varchar2,fname1 in varchar,
+lname1  in varchar,
+mname1  in varchar,
+password1 in  varchar,
+email1  in varchar,
+street_no1  in varchar,
+street_name1  in varchar2,
+app_no1  in varchar2,
+city1  in varchar2,
+state1   in varchar2,
+pin_code1   in varchar2,
+dob1 in  date,
+gender1  in varchar2
+)as
+begin
+
+
+insert into customer values(customer_id1,fname1,mname1,lname1,password1,
+email1,street_no1,street_name1,app_no1,city1,state1,pin_code1,dob1,gender1);
+insert into login values(fname1,password1);
+if sql%rowcount>=1 then
+dbms_output.put_line('Thank You For Filling Information'||'   '||' Welcome To Our Site');
+else
+dbms_output.put_line('Try Again');
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when others then
+dbms_output.put_line('Some Error');
+end ;

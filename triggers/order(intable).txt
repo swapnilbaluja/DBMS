@@ -1,0 +1,12 @@
+create  or replace trigger pk4
+before insert on order1 for each row
+declare
+var3 number;
+begin
+select max(order_id)into var3 from order1;
+:new.order_id:=var3+1;
+end;
+
+
+
+

@@ -1,0 +1,9 @@
+
+create or replace  trigger pk3 
+after insert on cart for each row
+declare
+
+begin
+
+dbms_output.put_line('Your cart id is'||:new.c_id);
+end;

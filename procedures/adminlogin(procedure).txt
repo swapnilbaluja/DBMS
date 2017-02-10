@@ -1,0 +1,883 @@
+create or replace procedure adminlogin1(eadminname  in varchar2,epassword in varchar2,d out number) as
+cursor c2 is select * from admin where username=eadminname and password=epassword;
+count123 number;
+aname varchar2(20);
+begin
+for rec in c2 loop
+count123:=c2%rowcount;
+aname:=rec.username;
+
+end loop;
+if count123>=1 then
+dbms_output.put_line('Welcome Admin'||'  '||aname);
+d:=1;
+else
+
+dbms_output.put_line('Invalid User Name Or Password');
+end if;
+exception
+when no_data_found then
+
+dbms_output.put_line('Invalid Admin Name Or Password11');
+
+end adminlogin1;
+******************************************************************
+create or replace procedure brand1(catno in number ,z out number) as
+cursor c5 is select * from brand  where category_id3=catno;
+ begin  
+dbms_output.put_line('Brand_id'||'   '||'Name');
+for rec5 in c5 loop
+if c5%rowcount>=1 then
+z:=z+1;
+            dbms_output.put_line(rec5.brand_id||'        '||rec5.brand_name);
+dbms_output.put_line('                  ');
+end if;
+      end loop;
+end;
+******************************************************
+create or replace procedure cart1(conf in number,caid in number)as
+cursor c11 is select * from order1 where order_id=conf;
+name varchar2(20);
+toalcosting number;
+begin
+for recc in c11 loop
+name:=recc.username;
+toalcosting:=recc.total_cost;
+end loop;
+insert into cart values(caid,name,conf,toalcosting);
+if sql%rowcount>=1 then
+dbms_output.put_line('Cart Updated');
+else
+dbms_output.put_line('Process Cancelled');
+end if;
+
+end cart1;
+***********************************************************
+create or replace procedure category1 as
+cursor c3 is select * from category;
+begin
+for rec3 in c3 loop
+            dbms_output.put_line(rec3.category_id||'  '||rec3.category_name);
+      end loop;
+end;
+
+
+
+***************************************************
+create or replace procedure item1(catno2 in number) as
+cursor c4 is select * from product  where category_id2=catno2;
+ begin  
+dbms_output.put_line('pid'||'  '||'Name'||'  '||'Model'||'  '||'Price');    
+for rec4 in c4 loop
+            dbms_output.put_line(rec4.prod_id||'  '||rec4.name||'  '||rec4.model||'  '||rec4.price);
+             dbms_output.put_line('                  ');
+      end loop;
+end item1;
+***********************************************************
+create or replace procedure newuser1( customer_id1 in varchar2,fname1 in varchar,
+lname1  in varchar,
+mname1  in varchar,
+password1 in  varchar,
+email1  in varchar,
+street_no1  in varchar,
+street_name1  in varchar2,
+app_no1  in varchar2,
+city1  in varchar2,
+state1   in varchar2,
+pin_code1   in varchar2,
+dob1 in  date,
+gender1  in varchar2
+)as
+begin
+
+
+insert into customer values(customer_id1,fname1,mname1,lname1,password1,
+email1,street_no1,street_name1,app_no1,city1,state1,pin_code1,dob1,gender1);
+insert into login values(fname1,password1);
+if sql%rowcount>=1 then
+dbms_output.put_line('Thank You For Filling Information'||'   '||' Welcome To Our Site');
+else
+dbms_output.put_line('Try Again');
+end if;
+exception
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when others then
+dbms_output.put_line('Some Error');
+end ;
+**********************************************************
+ create or replace procedure order12 (oid in number,unames in varchar2, catid in number,check54 in number,check53 in number,req in number) as
+
+cno number;
+cursor c8 is select * from category where category_id=catid;
+cursor c10 is select * from brand where brand_id=check54;
+cursor c9 is select * from product where prod_id=check53;
+quantity99 number;
+total906 number;
+checking1 number;
+checking2 number;
+pricecheck number;
+checking3 number;
+begin
+cno:=1;
+for foo1 in c8 loop
+checking1:=foo1.category_id;
+end loop;
+for foo2 in c10 loop
+checking2:=foo2.brand_id;
+end loop;
+for foo3 in c9 loop
+checking3:=foo3.prod_id;
+pricecheck:=foo3.price;
+end loop;
+
+
+quantity99:=req;
+total906:=pricecheck*quantity99;
+insert into order1 values(oid,unames,checking1,checking3,checking2,quantity99,total906);
+if sql%rowcount>=1 then
+dbms_output.put_line('Your Order Is Noted');
+else
+dbms_output.put_line('Invalid Entry');
+end if;
+
+end;
+********************************************************
+create or replace procedure payment1(orderidp number,method in varchar2,f out number) as
+qwe cart%rowtype;
+varcg number;
+
+cursor c598 is select * from cart where c_id=orderidp;
+begin
+f:=0;
+for red in c598 loop 
+
+dbms_output.put_line('Your Total Bill Is'||red. total_cost);
+varcg:=red. total_cost;
+insert into payment(orderid_p ,
+payment_type,amount) values(orderidp,method,varcg);
+if c598%rowcount>=1 then
+f:=1;
+dbms_output.put_line('Thank You !!!!!');
+
+else
+dbms_output.put_line('Transaction Failed !!!!!');
+end if;
+
+end loop;
+end;
+
+
+
+*******************************************
+create or replace procedure time is
+number date;
+begin
+insert into timekeep values(sysdate);
+end;
+
+****************************************************
+create or replace procedure userlogin1(eusername in varchar2,epassword in varchar2 ,c  out varchar2)  as
+
+cursor c1 is select * from login where username=eusername and password=epassword;
+count12 number;
+name varchar2(20);
+begin
+for rec in c1 loop
+count12:=c1%rowcount;
+name:=rec.username;
+
+end loop;
+if count12>=1 then
+time;
+dbms_output.put_line('welcome'||'  '||name);
+c:=1;
+
+else
+
+dbms_output.put_line('invalid user name or password');
+end if;
+exception
+when no_data_found then
+
+dbms_output.put_line('invalid user name or password11');
+
+end userlogin1;
+**************************************************
+callss
+declare
+eadminname admin.username%type;
+epassword admin.password%type;
+d number;
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+begin
+adminlogin1(:eadminname ,:epassword ,d);
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid User Name Or Password11');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
+**************************************************
+
+
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+catno number;
+z number;
+begin
+catno:=:EnterCategoryNumber;
+brand1(catno,z);
+if z<1 then
+raise no_data_found;
+end;
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry ');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+end;
+*******************************************************
+declare
+conf number;
+caid number;
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+begin
+conf:=:EnteryourOrderId;
+
+cart1(conf,caid);
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+end;
+**************************************************
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+begin
+category1;
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
+***********************************************
+
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+catno2 number;
+begin
+catno2:=:EnterCategoryNumber;
+item1(catno2);
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
+*******************************************
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+eusername login.username%type;
+epassword login.password%type;
+c number;
+ begin  
+userlogin1(:eusername,:epassword,c);
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid User Name Or Password11');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
+*************************************
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+ customer_id1 customer.customer_id%type;
+fname1 customer.f_name%type;
+lname1 customer.l_name%type;
+mname1 customer.m_name%type;
+password1 customer.password%type;
+email1 customer.email_id%type;
+street_no1 customer.street_no%type;
+street_name1 customer.street_name%type;
+app_no1 customer.app_no%type;
+city1 customer.city%type;
+state1  customer.state%type;
+pin_code1  customer.pin_code%type;
+dob1 customer.DOB%type;
+gender1 customer.gender%type;
+ begin  
+customer_id1:=:customer_id;
+fname1:=:fname;
+mname1:=:mname;
+lname1:=:lname;
+password1:=:password;
+email1:=:email;
+street_no1:=:street_no;
+street_name1:=:street_name;
+app_no1:=:app_no;
+city1:=:city;
+state1:=:state;
+pin_code1:=:pin_code;
+dob1:=:dob;
+gender1:=:gender;
+
+
+newuser1( customer_id1 ,fname1 ,
+lname1  ,
+mname1  ,
+password1 ,
+email1  ,
+street_no1  ,
+street_name1  ,
+app_no1 ,
+city1  ,
+state1  ,
+pin_code1  ,
+dob1 ,
+gender1  );
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+end;
+*************************************************
+
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+oid number;
+unames1 varchar(50);
+catid number;
+check54 number;
+check53 number;
+req number;
+begin
+
+catid:=:EntercatId;
+check54:=:EnterBrandId;
+check53:=:EnterProductId;
+req:=:EnterQuantityReq;
+order12(oid,unames1,catid,check54,check53,req);
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
+*****************************************************
+declare
+PRIMARYKEY EXCEPTION;
+FOREIGNKEY EXCEPTION;
+
+LARGEVALUE EXCEPTION;
+PRAGMA EXCEPTION_INIT(PRIMARYKEY,-00001);
+PRAGMA EXCEPTION_INIT(FOREIGNKEY,-02291);
+
+PRAGMA EXCEPTION_INIT(LARGEVALUE,-01438);
+pid number;
+method varchar2(20);
+orderidp number;
+f number;
+
+begin
+
+method:=:EnterMethodOfPayment;
+orderidp:=:EntercartId;
+
+payment1(orderidp,method,f);
+if f=0 then 
+raise no_data_found;
+end if;
+exception
+when LARGEVALUE THEN
+dbms_output.put_line('TOO LARGE VALUE ENTERED');
+
+when no_data_found then
+dbms_output.put_line('Invalid Entry');
+when Too_many_rows then
+dbms_output.put_line('Tooo Many Rows Were Found!!!');
+when invalid_number then
+dbms_output.put_line('Entered Number Was Invalid!!!');
+when invalid_cursor then
+dbms_output.put_line('Using Invalid Cursor!!!!');
+
+when PRIMARYKEY THEN
+dbms_output.put_line('PRIMARY KEY VIOLATED');
+when FOREIGNKEY THEN
+dbms_output.put_line('FORIEGN KEY VIOLATED');
+
+WHEN OTHERS THEN
+dbms_output.put_line('Some Undeclared Error Occured');
+
+end;
+****************************************
+trigger
+create or replace  trigger pk2 
+before insert on cart for each row
+declare
+var2 number;
+begin
+select max(c_id) into var2 from cart;
+:new.c_id:=var2+1;
+end;
+
+
+**********************************************
+
+create or replace  trigger pk3 
+after insert on cart for each row
+declare
+
+begin
+
+dbms_output.put_line('Your cart id is'||:new.c_id);
+end;
+****************************************
+create  or replace trigger pk5
+after insert on order1 for each row
+
+begin
+
+dbms_output.put_line('Your Order Id is'||:new.order_id);
+end;
+**********************************************
+create  or replace trigger pk4
+before insert on order1 for each row
+declare
+var3 number;
+begin
+select max(order_id)into var3 from order1;
+:new.order_id:=var3+1;
+end;
+************************************************
+create or replace trigger pkey
+ before insert on payment for each row
+declare
+var number;
+begin
+select max(p_id) into var from payment;
+:new.p_id:=var+1;
+end pkey;
+**********************************************
+
+create or replace trigger pkey89
+ after insert on payment for each row
+declare
+var89 number;
+begin
+dbms_output.put_line('Your Pyement Id is'||:new.p_id);
+end pkey89;
+**************************************************
+
+
+tables
+1)create 
+        table login
+        (  
+        username varchar2(25),
+        password varchar2(10)
+                              );
+********************************************************************************************************************
+dumping value for login table
+*******************************
+2)insert into login values ('swapnil','12345');
+********************************************************************************************************************
+create 
+       table admin 
+       (
+       username varchar2(25),
+       password varchar2(10)
+                             );
+**********************************************************************************************************************
+dumping value for admin login table
+************************************
+insert into login values ('swapnil','12345');
+**********************************************************************************************************************
+3) customer table
+create table customer(
+customer_id varchar2(20)primary key,
+f_name varchar(20)not null,
+m_name varchar(20),
+l_name varchar(20),
+password varchar2(15)not null,
+email_id varchar2(35),
+street_no varchar2(50)not null,
+street_name varchar2(50)not null,
+app_no varchar2(50)not null,
+city varchar2(50)not null, 
+state varchar2(50)not null, 
+pin_code varchar2(50)not null,
+DOB date not null,
+gender varchar2(6)check (gender in('male','female')));
+***************************************************************************************************************************
+insert into customer values(101,'Shrey',null,'Mathur','abcd','shreyzmail@gmail.com','12','
+GK street',19,'new delhi','delhi',110019,'25-may-2016','male');
+
+insert into customer values(102,'Manan',null,'Raheja','mr45','m_raheja@gmail.com','15','
+GK 2 street',34,'New Delhi','Delhi',110017,'2-may-2016','male');
+
+insert into customer values(103,'Raghav',null,'Sharma','dbz123','r_sharma@gmail.com','18','
+Govind puri',21,'New Delhi','Delhi',110016,'25-dec-2016','male');
+
+insert into customer values(104,'Akhil',null,'Mathur','abcdefgh','ak@gmail.com','22','
+rowada street',77,'Jaipur','Rajasthan',210012,'21-aug-2016','male');
+
+insert into customervalues(105,'Shalini',null,'sharma','ss4545','s_sharma@gmail.com','11',
+'Bandra street',87,'Mumbai','Maharashtra',310019,'13-jun-2016','female');
+*****************************************************************************************************************************
+4)create table category(category_id number primary key,category_name varchar(30) not null);
+***************************************************************************************************************************
+insert into category values(222,'electronic gadgets');
+insert into category values(223,'furniture');
+insert into category values(224,'clothing');
+insert into category values(225,'school stuff');
+insert into category values(226,'footwear');product
+****************************************************************
+5)create table product(prod_id number primary key,category_id2 number(20) not null,name varchar2(25)not null,model varchar(30)not null,price number not null);
+*****************************************************************************************************************************************************************
+insert into product values(1,223,'chair','2016-make',850);
+insert into product values(2,223,'table','2014-make',2200);
+insert into product values(3,226,' shoes','2016-make',475);
+insert into product values(4,224,'jersey','2015-make',675);
+insert into product values(5,222,'earphones','2016-make',1600);
+insert into product values(6,222,'washing machine','2014-make',5000);
+insert into product values(7,222,'fridge','2015-make',6500);
+insert into product values(8,222,'air conditioner','2015-make',3400);
+insert into product values(9,224,'denims','2016-make',850);
+insert into product values(10,222,'laptop','2016-make',30000);
+insert into product values(11,225,'school bag','2014-make',1700);
+insert into product values(12,222,'headphones','2014-make',1600);
+insert into product values(13,225,'coat','2016-make',1550);
+insert into product values(14,225,'shirt','2016-make',550);
+******************************************************************
+6)create table brand(brand_id number primary key,category_id3 number(20) not null,brand_name varchar2(30));
+**********************************************************************************************************
+insert into brand values(301,225,'Bata');
+insert into brand values(302,222,'LG');
+insert into brand values(303,222,'Samsung');
+insert into brand values(304,225,'Nike');
+insert into brand values(305,223,'Godrej');
+insert into brand values(306,223,'Plywood');
+insert into brand values(307,226,'Adidas');
+insert into brand values(308,224,'Monte Carlo');
+insert into brand values(309,223,'Chanel');
+
+***********************************************
+7)create table order1 (order_id number primary key,username varchar2(20),category_id4 number,prod_id2 number,brand_id2 number,quantity number,total_cost number);
+************************************************************************************
+insert into order1 values(111,'swapnil',222,8,303,1,3400);
+
+insert into order1 values(112,'shrey',223,2,305,2,4400);
+insert into order1 values(113,'raghav',225,11,304,1,1700);
+insert into order1 values(114,'akhil',222,7,302,2,13000);
+insert into order1 values(115,'priya',225,14,304,1,550);
+insert into order1 values(116,'shalini',226,3,307,3,1425);
+************************************************************************************************
+8)create table cart(c_id number primary key,user_name varchar2(20),orderid_c number,total_cost number not null);
+***************************************************************************************************************
+insert into cart values(2,'ram',120,550);
+insert into cart values(1,'swapnil',111,3400);
+****************************************************************
+9)final payement
+create table payment(p_id number primary key,
+orderid_p number,
+payment_type varchar2(30)not null,
+amount number not null);
+****************************************************************
+insert into payement values(1,111,'cash',3400);
+insert into payement values(2,120,'creditcard',550);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

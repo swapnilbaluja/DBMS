@@ -1,0 +1,11 @@
+create or replace  trigger pk2 
+before insert on cart for each row
+declare
+var2 number;
+begin
+select max(c_id) into var2 from cart;
+:new.c_id:=var2+1;
+end;
+
+
+

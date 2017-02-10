@@ -1,0 +1,50 @@
+ create or replace procedure order12 (oid in number,unames in varchar2, catid in number,check54 in number,check53 in number,req in number) as
+
+cno number;
+cursor c8 is select * from category where category_id=catid;
+cursor c10 is select * from brand where brand_id=check54;
+cursor c9 is select * from product where prod_id=check53;
+quantity99 number;
+total906 number;
+checking1 number;
+checking2 number;
+pricecheck number;
+checking3 number;
+begin
+cno:=1;
+for foo1 in c8 loop
+checking1:=foo1.category_id;
+end loop;
+for foo2 in c10 loop
+checking2:=foo2.brand_id;
+end loop;
+for foo3 in c9 loop
+checking3:=foo3.prod_id;
+pricecheck:=foo3.price;
+end loop;
+
+
+quantity99:=req;
+total906:=pricecheck*quantity99;
+insert into order1 values(oid,unames,checking1,checking3,checking2,quantity99,total906);
+if sql%rowcount>=1 then
+dbms_output.put_line('Your Order Is Noted');
+else
+dbms_output.put_line('Invalid Entry');
+end if;
+
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+create or replace procedure brand1(catno in number ,z out number) as
+cursor c5 is select * from brand  where category_id3=catno;
+ begin  
+dbms_output.put_line('Brand_id'||'   '||'Name');
+for rec5 in c5 loop
+if c5%rowcount>=1 then
+z:=z+1;
+            dbms_output.put_line(rec5.brand_id||'        '||rec5.brand_name);
+dbms_output.put_line('                  ');
+end if;
+      end loop;
+end;

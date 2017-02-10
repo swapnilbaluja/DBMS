@@ -1,0 +1,8 @@
+
+create or replace trigger pkey89
+ after insert on payment for each row
+declare
+var89 number;
+begin
+dbms_output.put_line('Your Pyement Id is'||:new.p_id);
+end pkey89;
